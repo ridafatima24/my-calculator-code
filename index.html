@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MIM - Zakat Calculator</title>
+    <link rel="icon" type="image/x-icon" href="assets/images/MicrosoftTeams-image.png">
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1.main_heading {
+            font-size: 40px;
+            color: #d83456;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h4#input_value_heading {
+            color: #365495;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 0;
+            text-align: left; /* Left-align headings */
+        }
+
+        input {
+            width: 100%;
+            height: 35px; /* Slightly shorter input fields */
+            padding: 5px;
+            margin: 5px 0; /* Reduced margin */
+            border: 2px solid #365495;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: center;
+            color: #D83564;
+        }
+
+        input::placeholder {
+            text-transform: capitalize;
+        }
+
+        table {
+            width: 100%;
+            margin-bottom: 10px; /* Reduced margin */
+        }
+
+        table td {
+            padding: 8px; /* Reduced padding */
+            text-align: left; /* Left-align table content */
+            font-size: 16px; /* Slightly smaller font size */
+        }
+
+        #calculate_button {
+            font-size: 16px;
+            border-radius: 8px;
+            height: 40px; /* Slightly shorter button */
+            background-color: #D61C1C;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto; /* Reduced margin */
+            width: 140px; /* Slightly narrower button */
+        }
+
+       
+        .total_asset, #amount_zakat {
+            width: 200px; /* Slightly narrower input fields */
+            height: 35px; /* Slightly shorter input fields */
+            margin: 5px auto; /* Reduced margin */
+            display: block;
+            text-align: center;
+            font-size: 16px;
+            border: 2px solid #345698;
+            border-radius: 5px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px; /* Reduced gap between columns */
+        }
+
+        .column {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            html, body {
+                overflow-x: hidden;
+                position: relative;
+                width: 100%;
+            }
+
+            .row {
+                flex-direction: column; /* Stack columns on smaller screens */
+            }
+
+            h1.main_heading {
+                font-size: 30px; /* Adjust heading size for smaller screens */
+            }
+
+            h4#input_value_heading {
+                font-size: 16px; /* Adjust sub-heading size for smaller screens */
+            }
+
+            table td {
+                font-size: 14px; /* Smaller font size for smaller screens */
+                padding: 6px; /* Further reduced padding */
+            }
+
+            input {
+                height: 30px; /* Slightly shorter input fields */
+                font-size: 14px; /* Smaller font size for inputs */
+                margin: 3px 0; /* Further reduced margin */
+            }
+
+            #calculate_button {
+                font-size: 14px; /* Smaller button text for smaller screens */
+                height: 35px; /* Slightly shorter button */
+                width: 120px; /* Narrower button */
+            }
+
+            .total_asset, #amount_zakat {
+                width: 180px; /* Narrower input fields for totals */
+                height: 30px; /* Slightly shorter input fields */
+                font-size: 14px; /* Smaller font size */
+            }
+
+            .column {
+                min-width: unset;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+
+        <!-- Nisab Calculation -->
+        <section>
+            <table>
+                <thead>
+                    <tr>
+                        <th><h4 id="input_value_heading">To Calculate Nisab</h4></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Enter one ounce gold worth in your currency</td>
+                        <td><input id="nisab" type="number" step="any" onchange="zakat()" /></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Cash, Gold/Silver, Liabilities, and Business Assets Section -->
+        <section id="asset_input_section">
+            <div class="row">
+                <!-- Column 1: Cash and Gold/Silver -->
+                <div class="column">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><h4 id="input_value_heading">Cash</h4></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Cash At Home</td>
+                                <td><input id="amount_home" type="number" step="any" onchange="zakat()" /></td>
+                            </tr>
+                            <tr>
+                                <td>Bank Account Balance</td>
+                                <td><input id="amount_bank" type="number" step="any" onchange="zakat()" /></td>
+                            </tr>
+                            <tr>
+                                <td>Investment Property</td>
+                                <td><input id="amount_property" type="number" step="any" onchange="zakat()" /></td>
+                            </tr>
+                            <tr>
+                                <td>Any Other Income</td>
+                                <td><input id="amount_other" type="number" step="any" onchange="zakat()" /></td>
+                            </tr>
+                            <tr>
+                                <td>Amount you have loaned</td>
+                                <td><input id="amount_have_loaned" type="number" step="any" onchange="zakat()" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><h4 id="input_value_heading">Gold/Silver</h4></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Gold worth in currency</td>
+                                <td><input id="amount_gold" type="number" step="any" onchange="zakat()" /></td>
+                            </tr>
+                            <tr>
+                                <td>Silver worth in currency</td>
+                                <td><input id="amount_silver" type="number" step="any" onchange="zakat()" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Column 2: Liabilities and Business Assets -->
+                <div class="column">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><h4 id="input_value_heading">Liabilities</h4></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Debt</td>
+                                <td><input id="amount_debts" type="number" step="any" onchange="zakat()" /></td>
+                            </tr>
+                            <tr>
+                                <td>Expenses</td>
+                                <td><input id="amount_expenses" type="number" step="any" onchange="zakat()" /></td>
+                            </tr>
+                            <tr>
+                                <td>Employees Salaries</td>
+                                <td><input id="amount_salaries" type="number" step="any" onchange="zakat()" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><h4 id="input_value_heading">Business Assets</h4></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Cash value of stock</td>
+                                <td><input id="amount_shares" type="number" step="any" onchange="zakat()" /></td>
+                            </tr>
+                            <tr>
+                                <td>Profits & Inventory</td>
+                                <td><input id="amount_profit" type="number" step="any" onchange="zakat()" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Calculate Button -->
+        <button id="calculate_button" type="button" onclick="zakat()">Calculate Zakat</button>
+
+        <!-- Total Assets and Zakat Section -->
+        <section id="asset_input_section">
+            <div class="row">
+                <div class="column">
+                    <table>
+                        <tr>
+                            <th><h4 id="input_value_heading">Total Assets:</h4></th>
+                            <td><input class="total_asset" id="amount_assets" type="text" readonly /></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="column">
+                    <table>
+                        <tr>
+                            <th><h4 id="input_value_heading">Zakat on Assets:</h4></th>
+                            <td><input id="amount_zakat" type="text" readonly /></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Helper function to get input value
+        function getValue(id) {
+            var value = document.getElementById(id).value;
+            return value === "" || isNaN(value) ? 0 : parseFloat(value);
+        }
+
+        // Zakat Calculation Function
+        function zakat() {
+            var amt_nisab = getValue("nisab") * 3; // Nisab calculation
+
+            // Cash
+            var amt_home = getValue("amount_home");
+            var amt_bank = getValue("amount_bank");
+            var amt_property = getValue("amount_property");
+            var amt_other = getValue("amount_other");
+            var amt_have_loaned = getValue("amount_have_loaned");
+
+            // Gold and Silver
+            var amt_gold = getValue("amount_gold");
+            var amt_silver = getValue("amount_silver");
+
+            // Liabilities
+            var amt_debts = getValue("amount_debts");
+            var amt_expenses = getValue("amount_expenses");
+            var amt_salaries = getValue("amount_salaries");
+
+            // Business Assets
+            var amt_shares = getValue("amount_shares");
+            var amt_profit = getValue("amount_profit");
+
+            // Total Assets
+            var amt_assets_gross = amt_home + amt_bank + amt_property + amt_other + amt_have_loaned + amt_gold + amt_silver + amt_shares + amt_profit;
+            var amt_assets_net = amt_assets_gross - (amt_debts + amt_expenses + amt_salaries);
+
+            // Zakat Eligibility
+            var amt_eligible = amt_assets_net >= amt_nisab ? amt_assets_net : 0;
+            var amt_zakat = (amt_eligible * 0.025).toFixed(2);
+
+            // Display Results
+            document.getElementById("amount_assets").value = amt_assets_net.toFixed(2);
+            document.getElementById("amount_zakat").value = amt_zakat;
+        }
+    </script>
+</body>
+</html>
