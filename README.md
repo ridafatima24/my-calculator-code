@@ -1,2 +1,3 @@
-# my-calculator-code
-this zakat calculator code 
+# zakat-calculator-code
+This zakat calculator code 
+Developer :Rida Fatima
